@@ -3,7 +3,7 @@ var app = express()
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://deloss:password1234@cluster0-zimcv.mongodb.net/test?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://deloss:password1234@cluster0-zimcv.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser : true, useUnifiedTopology: true});
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended : true}));
@@ -24,11 +24,10 @@ app.get('/', (req, res) => {
 })
 
 app.get('/campgrounds', (req, res) => {
-	CampgroundModel.create({title: "hola", imageUrl: "urll..."})
-	var campgrounds = CampgroundModel.find({} , (error, camp) => {
+	var campgrounds = CampgroundModel.find({} , (error, camps) => {
 		if(!error) {
-			console.log(camp);
-			res.render('campgrounds', {campgrounds: camp});
+			console.log(camps);
+			res.render('campgrounds', {campgrounds: camps});
 		} else {
 			res.send("There was an error");
 		}
