@@ -1,0 +1,42 @@
+<%- include('partials/header') %>
+
+<div class="container">
+	
+	<div class="jumbotron">
+		<h1>
+			<%= campground.title %>	
+		</h1>
+	</div>
+	
+	<img src="<%= campground.imageUrl %>">
+	
+	<h4>
+		Comments
+	</h4>
+	
+	<ul>
+		
+	<% 
+	
+		campground.comments.forEach((comment) => { %>
+			
+			<li>
+				<h2>
+					<%= comment.author %>:
+				</h2>
+				<p>
+					<%= comment.text %>
+				</p>
+			</li>
+			
+			
+		<% })
+	
+	%>
+		
+	</ul>
+	
+</div>
+
+
+<%- include('partials/footer') %>

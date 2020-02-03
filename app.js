@@ -1,19 +1,18 @@
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var CampgroundModel = require('./models/campground');
+var seedsDB = require('./seeds');
+
+seedsDB();
 
 mongoose.connect('mongodb+srv://deloss:password1234@cluster0-zimcv.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser : true, useUnifiedTopology: true});
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended : true}));
 
-var campgroundSchema = new mongoose.Schema({
-	title: String,
-	imageUrl: String
-});
 
-var CampgroundModel = mongoose.model("Campground", campgroundSchema);
 
 app.listen(3000, '0.0.0.0', () => {
 	console.log("App has started.")
@@ -24,7 +23,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/campgrounds', (req, res) => {
-	var campgrounds = CampgroundModel.find({} , (error, camps) => {
+	CampgroundModel.find({} , (error, camps) => {
 		if(!error) {
 			console.log(camps);
 			res.render('campgrounds', {campgrounds: camps});
@@ -50,6 +49,17 @@ app.post('/campgrounds', (req, res) => {
 	} else {
 		res.send('There was an error')
 	}
+})
+
+app.get('/campgrounds/:id', (req, res) => {
+	CampgroundModel.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
+		if(err) {
+			console.log("The campground doesnt exist");
+			res.send("The campground doesnt exist");
+		} else {
+			res.render("campground-details", {campground: foundCampground});
+		}
+	})
 })
 
 app.get('/campgrounds/new', (req, res) => {
