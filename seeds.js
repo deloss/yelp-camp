@@ -5,15 +5,15 @@ var Comment   = require("./models/comments");
 var data = [
     {
         title: "Cloud's Rest", 
-        imageUrl: "https://farm4.staticflickr.com/3795/10131087094_c1c0a1c859.jpg",
+        imageUrl: "https://www.mujerhoy.com/noticias/201804/23/media/cortadas/campamentos-de-verano-como-elegir-bien-kt7D-U501702292163jFE-560x420@MujerHoy.jpg",
         },
     {
         title: "Desert Mesa", 
-        imageUrl: "https://farm6.staticflickr.com/5487/11519019346_f66401b6c1.jpg",
+        imageUrl: "https://www.mujerhoy.com/noticias/201804/23/media/cortadas/campamentos-de-verano-como-elegir-bien-kt7D-U501702292163jFE-560x420@MujerHoy.jpg",
         },
     {
         title: "Canyon Floor", 
-        imageUrl: "https://farm1.staticflickr.com/189/493046463_841a18169e.jpg",
+        imageUrl: "https://www.mujerhoy.com/noticias/201804/23/media/cortadas/campamentos-de-verano-como-elegir-bien-kt7D-U501702292163jFE-560x420@MujerHoy.jpg",
 	}
 ]
  

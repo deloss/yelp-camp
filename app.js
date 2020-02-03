@@ -65,3 +65,20 @@ app.get('/campgrounds/:id', (req, res) => {
 app.get('/campgrounds/new', (req, res) => {
 	res.render('new-campground');
 })
+
+// MOBILE SECTION
+
+app.get('/mobile/campgrounds', (req, res) => {
+	CampgroundModel.find().populate("comments").exec((error, camps) => {
+		if(!error) {
+			console.log(camps);
+			res.send(camps);
+		} else {
+			console.log(error);
+		}
+	});
+	
+})
+
+
+//
