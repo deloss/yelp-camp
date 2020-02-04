@@ -5,6 +5,9 @@ var mongoose = require('mongoose');
 var CampgroundModel = require('./models/campground');
 var Comment = require('./models/comments');
 var seedsDB = require('./seeds');
+var passport = require('passport');
+var LocalStrategy = require('passport-local');
+var User = require('./models/user')
 
 //seedsDB();
 
@@ -13,8 +16,17 @@ mongoose.connect('mongodb+srv://deloss:password1234@cluster0-zimcv.mongodb.net/t
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static(__dirname + '/public'));
+app.use(require('express-session')({
+	secret: 'Wtf is secret?!',
+	resave: false,
+	saveUninitialized: false,
+}));
 
-
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.listen(3000, '0.0.0.0', () => {
 	console.log("App has started.")
@@ -95,6 +107,32 @@ app.post('/campgrounds/:id/comments', (req, res) => {
 		}
 	})
 })
+
+app.get('/signup', (req, res) => {
+	res.render('signup')
+});
+
+app.post('/signup', (req, res) => {
+	User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
+		if(err) {
+			console.log(err);
+			res.redirect('/signup')
+		} else {
+			passport.authenticate('local')(req, res, () => {
+				res.redirect('/');
+			})
+		}
+	})
+})
+
+app.get('/login', (req, res) => {
+	res.render('login')
+});
+
+app.post('/login', passport.authenticate('local', {
+	successRedirect: '/',
+	failureRedirect: '/login'
+}), (req, res) => {})
 
 
 // MOBILE SECTION
