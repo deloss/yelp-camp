@@ -8,6 +8,9 @@ var seedsDB = require('./seeds');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var User = require('./models/user')
+var campgroundRoutes = require('./routes/campgrounds');
+var commentRoutes = require('./routes/comments');
+var indexRoutes = require('./routes/index');
 
 //seedsDB();
 
@@ -22,117 +25,33 @@ app.use(require('express-session')({
 	saveUninitialized: false,
 }));
 
+app.use((req, res, next) => {
+	res.locals.currentUser = req.user;
+	next();
+})
+
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(campgroundRoutes);
+app.use(commentRoutes);
+app.use(indexRoutes);
+
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+
 
 app.listen(3000, '0.0.0.0', () => {
 	console.log("App has started.")
 })
 
-app.get('/', (req, res) => {
-	res.render("homepage");
-})
-
-app.get('/campgrounds', (req, res) => {
-	CampgroundModel.find({} , (error, camps) => {
-		if(!error) {
-			console.log(camps);
-			res.render('campgrounds', {campgrounds: camps});
-		} else {
-			res.send("There was an error");
-		}
-	});
-	
-})
-
-app.post('/campgrounds', (req, res) => {
-	var newCampgroundTitle = req.body.title; 
-	var newCampgroundImageUrl = req.body.image;
-	if(newCampgroundTitle && newCampgroundImageUrl) {
-		CampgroundModel.create({title: newCampgroundTitle, imageUrl: newCampgroundImageUrl}, (error, camp) => {
-			if(!error) {
-				res.redirect('/campgrounds');
-			} else {
-				res.send("There was an error");
-			}
-		});
-		
-	} else {
-		res.send('There was an error')
-	}
-})
-
-app.get('/campgrounds/new', (req, res) => {
-	res.render('new-campground');
-})
 
 
-app.get('/campgrounds/:id', (req, res) => {
-	CampgroundModel.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
-		if(err) {
-			console.log("The campground doesnt exist");
-			res.send("The campground doesnt exist");
-		} else {
-			console.log(foundCampground);
-			res.render("campground-details", {campground: foundCampground});
-		}
-	})
-})
 
-app.post('/campgrounds/:id/comments', (req, res) => {
-	CampgroundModel.findById(req.params.id, (err, campgroundFound) => {
-		if(err) {
-			res.send('There was an error')
-			console.log(err);
-		}
-		else {
-			console.log(req.body.comment);
-			Comment.create({
-				text: req.body.comment, 
-				author: 'Jorge'
-			}, function(err, comment){
-				if(err){
-					console.log(err);
-				} else {
-					campgroundFound.comments.push(comment);
-					campgroundFound.save();
-					console.log("Created new comment");
-				}
-			})
-			console.log(campgroundFound);
-			res.redirect(`/campgrounds/${req.params.id}`);
-		}
-	})
-})
 
-app.get('/signup', (req, res) => {
-	res.render('signup')
-});
 
-app.post('/signup', (req, res) => {
-	User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
-		if(err) {
-			console.log(err);
-			res.redirect('/signup')
-		} else {
-			passport.authenticate('local')(req, res, () => {
-				res.redirect('/');
-			})
-		}
-	})
-})
-
-app.get('/login', (req, res) => {
-	res.render('login')
-});
-
-app.post('/login', passport.authenticate('local', {
-	successRedirect: '/',
-	failureRedirect: '/login'
-}), (req, res) => {})
 
 
 // MOBILE SECTION
