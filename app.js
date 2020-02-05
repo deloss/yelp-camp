@@ -11,6 +11,7 @@ var User = require('./models/user')
 var campgroundRoutes = require('./routes/campgrounds');
 var commentRoutes = require('./routes/comments');
 var indexRoutes = require('./routes/index');
+var methodOverride = require('method-override')
 
 //seedsDB();
 
@@ -24,6 +25,7 @@ app.use(require('express-session')({
 	resave: false,
 	saveUninitialized: false,
 }));
+app.use(methodOverride('_method'));
 
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;

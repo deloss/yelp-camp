@@ -12,12 +12,14 @@ router.post('/campgrounds/:id/comments', (req, res) => {
 		else {
 			console.log(req.body.comment);
 			Comment.create({
-				text: req.body.comment, 
-				author: 'Jorge'
+				text: req.body.comment
 			}, function(err, comment){
 				if(err){
 					console.log(err);
 				} else {
+					comment.author.id = req.user._id;
+					comment.author.username = req.user.username;
+					comment.save();
 					campgroundFound.comments.push(comment);
 					campgroundFound.save();
 					console.log("Created new comment");

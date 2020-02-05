@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include('../partials/header') %>
 
 <div class="container">
 	
@@ -23,6 +23,11 @@
 					<p>
 						<%= campground.title %>	
 					</p>
+					<form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+						<button>
+							Delete
+						</button>
+					</form>
 				</div>
 			</div>
 
@@ -51,7 +56,7 @@
 						<div class="row">
 							<div class="col-md-12">
 
-								<%= comment.author %>:
+								<%= comment.author.username %>:
 
 								<span class="pull-right">10 minutes ago</span>
 							<p>
@@ -76,4 +81,4 @@
 </div>
 
 
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>
