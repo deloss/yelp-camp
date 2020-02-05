@@ -20,6 +20,10 @@ router.post('/campgrounds', (req, res) => {
 	if(newCampgroundTitle && newCampgroundImageUrl) {
 		CampgroundModel.create({title: newCampgroundTitle, imageUrl: newCampgroundImageUrl}, (error, camp) => {
 			if(!error) {
+				camp.author.id = req.user._id;
+				camp.author.username = req.user.username;
+				camp.save();
+				console.log(camp);
 				res.redirect('/campgrounds');
 			} else {
 				res.send("There was an error");
@@ -41,7 +45,10 @@ router.get('/campgrounds/:id/edit', (req, res) => {
 			console.log(err);
 			res.send("There was an error");
 		} else {
-			res.render('campgrounds/edit', {campground: foundCampground});
+			if(foundCampground.author.id.equals(req.user._id))
+				res.render('campgrounds/edit', {campground: foundCampground});
+			else
+				res.send("You are not authorized to edit that campground");
 		}
 	})
 	
