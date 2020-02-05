@@ -6,12 +6,12 @@ var CampgroundModel = require('./models/campground');
 var Comment = require('./models/comments');
 var seedsDB = require('./seeds');
 var passport = require('passport');
-var LocalStrategy = require('passport-local');
-var User = require('./models/user')
+var methodOverride = require('method-override')
 var campgroundRoutes = require('./routes/campgrounds');
 var commentRoutes = require('./routes/comments');
 var indexRoutes = require('./routes/index');
-var methodOverride = require('method-override')
+var LocalStrategy = require('passport-local');
+var User = require('./models/user')
 
 //seedsDB();
 
@@ -27,23 +27,23 @@ app.use(require('express-session')({
 }));
 app.use(methodOverride('_method'));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
 	next();
 })
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(campgroundRoutes);
-app.use(commentRoutes);
-app.use(indexRoutes);
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
+
+app.use(campgroundRoutes);
+app.use(commentRoutes);
+app.use(indexRoutes);
 
 app.listen(3000, '0.0.0.0', () => {
 	console.log("App has started.")
