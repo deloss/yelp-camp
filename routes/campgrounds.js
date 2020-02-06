@@ -35,11 +35,11 @@ router.post('/campgrounds', (req, res) => {
 	}
 })
 
-router.get('/campgrounds/new', (req, res) => {
+router.get('/campgrounds/new', isLoggedIn, (req, res) => {
 	res.render('campgrounds/new-campground');
 })
 
-router.get('/campgrounds/:id/edit', (req, res) => {
+router.get('/campgrounds/:id/edit', isLoggedIn, (req, res) => {
 	CampgroundModel.findById(req.params.id, (err, foundCampground) => {
 		if(err) {
 			console.log(err);
@@ -88,4 +88,11 @@ router.get('/campgrounds/:id', (req, res) => {
 		}
 	})
 })
+
+function isLoggedIn(req, res, next) {
+	if(req.isAuthenticated())
+		next()
+	else
+		res.redirect('/login')
+}
 module.exports = router;

@@ -45,7 +45,14 @@ app.use(campgroundRoutes);
 app.use(commentRoutes);
 app.use(indexRoutes);
 
+//HEROKU
+/*
 app.listen(process.env.PORT, process.env.IP, () => {
+	console.log("App has started.")
+})*/
+
+//goormid
+app.listen(3000, '0.0.0.0', () => {
 	console.log("App has started.")
 })
 

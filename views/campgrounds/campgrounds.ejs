@@ -5,12 +5,14 @@
 <header class="jumbotron">
 	<div class="container">
 		<h1>
-		Campgrounds list
+			YelpCamp Campgrounds
 		</h1>
 		<p>
-			Checkout the best campgrounds!
+			Checkout all the available campgrounds!
 		</p>
+		<% if(currentUser && campground.author.id.equals(currentUser._id)) { %>
 		<a href="/campgrounds/new" class="btn btn-large btn-primary">Create new campground!</a>
+		<% } %>
 	</div>
 </header>	
 
@@ -22,11 +24,12 @@
 <% campgrounds.forEach((campground) => { %>
 	<div class="col-md-3 col-sm-6">
 		<div class="thumbnail">
-			<a href="/campgrounds/<%= campground._id %>"><img src="<%= campground.imageUrl %>"></a>
+			<img src="<%= campground.imageUrl %>">
 			<div class="caption">
 				<h4>
 					<%= campground.title %>
 				</h4>
+				<a href="/campgrounds/<%= campground._id %>" class="btn btn-large btn-info">See more</a>
 			</div>
 		</div>
 	</div>
