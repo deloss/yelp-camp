@@ -45,7 +45,7 @@ app.use(campgroundRoutes);
 app.use(commentRoutes);
 app.use(indexRoutes);
 
-app.listen(80, '0.0.0.0', () => {
+app.listen(process.env.PORT, process.env.IP, () => {
 	console.log("App has started.")
 })
 
