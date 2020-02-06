@@ -45,7 +45,7 @@ app.use(campgroundRoutes);
 app.use(commentRoutes);
 app.use(indexRoutes);
 
-app.listen(3000, '0.0.0.0', () => {
+app.listen(80, '0.0.0.0', () => {
 	console.log("App has started.")
 })
 
