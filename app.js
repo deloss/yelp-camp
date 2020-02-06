@@ -13,7 +13,7 @@ var indexRoutes = require('./routes/index');
 var LocalStrategy = require('passport-local');
 var User = require('./models/user')
 
-seedsDB();
+//seedsDB();
 
 mongoose.connect('mongodb+srv://deloss:password1234@cluster0-zimcv.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser : true, useUnifiedTopology: true});
 
