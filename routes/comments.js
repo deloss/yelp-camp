@@ -30,4 +30,18 @@ router.post('/campgrounds/:id/comments', (req, res) => {
 		}
 	})
 })
+
+router.delete('/campgrounds/:campgroundId/comments/:commentId', (req, res) => {
+	Comment.findByIdAndDelete(req.params.commentId, (err, campgroundFound) => {
+		if(err) {
+			res.send('There was an error')
+			console.log(err);
+		}
+		else {
+			console.log('Comment succesfully deleted');
+			res.redirect(`/campgrounds/${req.params.campgroundId}`)
+		}
+	})
+})
+
 module.exports = router;
