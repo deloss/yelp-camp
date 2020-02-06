@@ -49,13 +49,6 @@ app.listen(3000, '0.0.0.0', () => {
 	console.log("App has started.")
 })
 
-
-
-
-
-
-
-
 // MOBILE SECTION
 
 app.get('/mobile/campgrounds', (req, res) => {
