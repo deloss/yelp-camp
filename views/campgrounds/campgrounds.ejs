@@ -10,7 +10,7 @@
 		<p>
 			Checkout all the available campgrounds!
 		</p>
-		<% if(currentUser && campground.author.id.equals(currentUser._id)) { %>
+		<% if(currentUser) { %>
 		<a href="/campgrounds/new" class="btn btn-large btn-primary">Create new campground!</a>
 		<% } %>
 	</div>
